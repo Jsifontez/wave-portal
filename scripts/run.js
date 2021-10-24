@@ -22,6 +22,12 @@ const main = async () => {
   waveTxn = await waveContract.connect(randomPerson).wave('This is wave #2')
   await waveTxn.wait()
 
+  /**
+   * repeat a wave before 15 min pass
+   * this generate an error in EVM
+   */
+  // waveTxn = await waveContract.wave('This is a wave #3. The user repeat before 15 min pass')
+
   // getting balance after a wave
   contractBalance = await hre.ethers.provider.getBalance(waveContract.address)
   console.log("Contract balance", hre.ethers.utils.formatEther(contractBalance))
