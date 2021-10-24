@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 
-pragma solidity 0.8.4;
+pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 
@@ -29,7 +29,7 @@ contract WavePortal {
      */
     Wave[] waves;
 
-    constructor() {
+    constructor () payable {
         console.log("Yo yo, I am a contract and I am smart");
     }
 
@@ -47,6 +47,16 @@ contract WavePortal {
 
         // emiting the event created in line 14
         emit NewWave(msg.sender, block.timestamp, _message);
+
+        // from we going to set the prize to everyone who wave
+        uint256 prizeAmount = 0.0001 ether;
+
+        // address(this).balance is refering to the balance of the contract
+        require (prizeAmount <= address(this).balance, "Trying to withdraw more money than the contract has.");
+
+        (bool success, ) = (msg.sender).call{value: prizeAmount }("");
+
+        require (success, "Failed to withdraw money from contract.");
     }
 
     /*
